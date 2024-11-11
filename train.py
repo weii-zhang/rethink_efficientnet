@@ -42,6 +42,7 @@ class Efficientnet_train():
     def __call__(self):  # 对象后面加()时候自动调用
         best_acc = 0
         self.model.train(True)
+        os.makedirs(self.save_dir,exist_ok=True)
         for ech in range(self.epochs):
             optimzer1 = self.lrfn(ech, self.optimzer)
 
@@ -104,14 +105,10 @@ class Efficientnet_train():
                 test_acc = correct.item() / total
                 print('Acc:{}, correct:{}, total:{}'.format(test_acc, correct, total))
 
-            # if best_acc < test_acc:
-            #     best_acc = test_acc
-            #     start_time=(time.strftime("%m%d",time.localtime()))
-            #     save_weight=self.save_dir+os.sep+start_time #保存路径
-            #     os.makedirs(save_weight,exist_ok=True)
-            #     torch.save(self.model, save_weight + os.sep + "best_1101_train_val.pth")
+            if best_acc < test_acc:
+                best_acc = test_acc
+                torch.save(self.model, self.save_dir + os.sep + "epo{}_best.pth".format(ech+1))
             
-            os.makedirs(self.save_dir,exist_ok=True)
             torch.save(self.model, self.save_dir + os.sep + "epo{}.pth".format(ech+1))
 
 
@@ -193,14 +190,14 @@ class Efficientnet_train():
 def parse_opt():
     parser=argparse.ArgumentParser()
     parser.add_argument("--weights",type=str,default="/mnt/nas-new/home/zhanggefan/zw/efficientnet/models/efficientnet-b5-b6417697.pth",help='initial weights path')#预训练模型路径
-    parser.add_argument("--img-dir",type=str,default="/mnt/nas-new/home/zhanggefan/dataset/prediction/train_val_test_1104_pre",help="train image path") #数据集的路径
+    parser.add_argument("--img-dir",type=str,default="/mnt/nas-new/home/zhanggefan/dataset/prediction/train_val_test_1102",help="train image path") #数据集的路径
     parser.add_argument("--imgsz",type=int,default=512,help="image size") #图像尺寸
     parser.add_argument("--epochs",type=int,default=12,help="train epochs")#训练批次
     parser.add_argument("--batch-size",type=int,default=4,help="train batch-size") #batch-size
     parser.add_argument("--class_num",type=int,default=2,help="class num") #类别数
     parser.add_argument("--lr",type=float,default=0.0001,help="Init lr") #学习率初始值
     parser.add_argument("--m",type=float,default=0.9,help="optimer momentum") #动量
-    parser.add_argument("--save-dir",type=str,default="/mnt/nas-new/home/zhanggefan/zw/efficientnet/weights/1104_pre",help="save models dir")#保存模型路径
+    parser.add_argument("--save-dir",type=str,default="/mnt/nas-new/home/zhanggefan/zw/efficientnet/weights/1102",help="save models dir")#保存模型路径
     opt=parser.parse_known_args()[0]  # 用于解析已知的命令行参数，同时忽略未知参数
     return opt
 
