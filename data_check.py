@@ -1,5 +1,6 @@
-# 这个文件是为了检查数据的类型
-# 得到的结果是按照（图片大小 图片通道 图片后缀）的数量统计以及总数统计
+# 结构：父文件夹->子文件夹->图片
+# 这个文件是为了检查父文件夹数据的类型
+# 得到的结果是按照《子文件夹（图片大小 图片通道 图片后缀）的数量统计以及总数统计》
 
 
 import os
@@ -7,7 +8,7 @@ from PIL import Image
 from collections import defaultdict
 
 # 指定要检查的文件夹路径
-root_path = '/mnt/nas-new/home/zhanggefan/dataset/prediction/train_val_test_1104_now/train'
+root_path = '/mnt/nas-new/home/zhanggefan/dataset/prediction/train_val_test_1109/test2'
 
 # 用于存储类别统计
 total_cls_num = 0
